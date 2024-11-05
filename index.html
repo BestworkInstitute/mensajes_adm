@@ -28,15 +28,30 @@
         .hidden {
             display: none;
         }
+        .logo {
+            max-width: 100px;
+            width: 100%;
+            height: auto;
+        }
+        button {
+            background-color: #FF7F50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
     <div class="container">
         <!-- Logo -->
-        <img src="https://bestwork.cl/wp-content/uploads/2023/05/Logo.png" alt="Logo Bestwork" class="mb-6 mx-auto w-32">
+        <img src="https://bestwork.cl/wp-content/uploads/2023/05/Logo.png" alt="Logo Bestwork" class="logo mb-6 mx-auto">
 
         <!-- Login Panel -->
-        <div id="loginPanel" class="login-container">
+        <div id="loginPanel">
             <h2 class="text-2xl font-bold mb-4">Iniciar Sesión</h2>
             <input type="password" id="clave" aria-label="Ingresa la clave" placeholder="Ingresa la Clave" class="border-2 border-blue-400 p-2 rounded-lg mb-4 w-full">
             <button onclick="login()" class="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg transition duration-300">Ingresar</button>
@@ -85,13 +100,13 @@
             switch (area) {
                 case "TALLERES":
                 case "PLATAFORMA":
-                    mensaje = `¡Hola ${nombre}! Soy tu asistente virtual de Área Académica. Me han derivado tu caso y me gustaría saber si tienes tiempo para conversar ahora.`;
+                    mensaje = `Soy tu asistente virtual de Área Académica. Me han derivado tu caso y me gustaría saber si tienes tiempo para conversar ahora.`;
                     break;
                 case "PAGOS":
-                    mensaje = `¡Hola ${nombre}! Soy tu asistente virtual de Área de Cobranzas. Me han derivado tu caso y me gustaría saber si tienes tiempo para conversar ahora.`;
+                    mensaje = `Soy tu asistente virtual de Área de Cobranzas. Me han derivado tu caso y me gustaría saber si tienes tiempo para conversar ahora.`;
                     break;
                 default:
-                    mensaje = `¡Hola ${nombre}! Soy tu asistente virtual. ¿Tienes tiempo para conversar ahora?`;
+                    mensaje = `Soy tu asistente virtual. ¿Tienes tiempo para conversar ahora?`;
                     break;
             }
 
@@ -106,7 +121,7 @@
             try {
                 const response = await axios.post(url, null, { params: headers });
                 logToConsole(`Mensaje enviado a ${nombre} (${celular})`);
-                logToConsole(`Mensaje ${mensaje}, enviado a ${nombre} (${celular})`);
+                logToConsole(`Mensaje: ${mensaje}, enviado a ${nombre} (${celular})`);
             } catch (error) {
                 logToConsole(`Error enviando mensaje a ${nombre} (${celular}): ${error}`);
             }
