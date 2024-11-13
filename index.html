@@ -43,6 +43,22 @@
             font-size: 16px;
             cursor: pointer;
         }
+        .schedule {
+            text-align: left;
+            margin-top: 10px;
+            padding: 15px;
+            background-color: #f0f4f8;
+            border-radius: 8px;
+        }
+        .schedule h3 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #FF7F50;
+        }
+        .schedule p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body class="bg-gray-100">
@@ -59,6 +75,19 @@
 
         <!-- Main Panel (hidden initially) -->
         <div id="mainPanel" class="hidden">
+            <!-- Horarios de Atención -->
+            <div class="schedule mb-6">
+                <h3>Horarios de Atención</h3>
+                <p><strong>COBRANZA:</strong> Angélica - Lunes a Viernes de 08:00 a 18:00 hrs, dos sábados al mes</p>
+                <p><strong>MARKETING:</strong> Equipo de Marketing - Lunes a Viernes de 08:00 a 20:00 hrs, Sábados de 09:00 a 14:00 hrs</p>
+                <p><strong>TALLERES:</strong> María José - Lunes a Viernes de 09:00 a 19:00 hrs, Viernes hasta las 18:00</p>
+                <p><strong>PLATAFORMA:</strong> Carla - Lunes a Viernes de 09:00 a 19:00 hrs, Viernes hasta las 18:00</p>
+                <p><strong>OTROS:</strong> Kary - Lunes a Viernes de 08:00 a 18:00 hrs, Viernes hasta las 17:00</p>
+                <p><strong>ALIANZAS:</strong> Isa - Lunes a Viernes de 09:00 a 18:00 hrs</p>
+                <p><strong>Coordinación Académica:</strong> Carolina - Lunes a Viernes de 19:00 a 21:00 hrs para Talleres, Plataforma y Otros</p>
+            </div>
+
+            <!-- Formulario de Envío de Mensaje -->
             <h2 class="text-2xl font-bold mb-4">Enviar Mensaje</h2>
             <input type="text" id="nombre" placeholder="Nombre Alumno" aria-label="Nombre" class="border-2 border-blue-400 p-2 rounded-lg mb-4 w-full">
             <input type="text" id="celular" placeholder="Celular Alumno" aria-label="Celular" class="border-2 border-blue-400 p-2 rounded-lg mb-4 w-full">
@@ -66,8 +95,19 @@
                 <option value="TALLERES">TALLERES</option>
                 <option value="PLATAFORMA">PLATAFORMA</option>
                 <option value="PAGOS">PAGOS</option>
+                <option value="MARKETING">MARKETING</option>
+                <option value="ALIANZAS">ALIANZAS</option>
                 <option value="OTRO">OTRO</option>
             </select>
+
+            <!-- Sección de Nota -->
+            <label for="agregarNota" class="block text-left mb-2 font-semibold">¿Quieres agregar una nota?</label>
+            <select id="agregarNota" class="border-2 border-blue-400 p-2 rounded-lg mb-4 w-full" onchange="toggleNotaInput()">
+                <option value="no">No</option>
+                <option value="si">Sí</option>
+            </select>
+            <input type="text" id="nota" placeholder="Escribe tu nota (máx. 100 caracteres)" maxlength="100" class="border-2 border-blue-400 p-2 rounded-lg mb-4 w-full hidden">
+
             <button id="enviarMensajesBtn" class="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-lg transition duration-300">Enviar Mensaje</button>
 
             <!-- Console Output -->
@@ -75,6 +115,7 @@
         </div>
     </div>
 
+    <!-- JavaScript Code -->
     <script>
         const CLAVE_CORRECTA = 'BESTWORK2024';
 
@@ -89,12 +130,21 @@
             }
         }
 
-        const flow = "bb848b58-c891-4aec-ac21-738a857bc778";
+        function toggleNotaInput() {
+            const agregarNota = document.getElementById('agregarNota').value;
+            const notaInput = document.getElementById('nota');
+            notaInput.classList.toggle('hidden', agregarNota === 'no');
+        }
+
+        const flow = "9f8f507c-a1bd-4cdb-9383-168c6b45da90";
 
         async function enviarMensaje() {
             const nombre = document.getElementById('nombre').value;
             const celular = document.getElementById('celular').value;
             const area = document.getElementById('area').value;
+            const agregarNota = document.getElementById('agregarNota').value;
+            const nota = agregarNota === 'si' ? document.getElementById('nota').value : 'Sin Nota';
+
             let mensaje;
 
             switch (area) {
@@ -115,13 +165,14 @@
                 CELULAR: celular,
                 NOMBRE: nombre,
                 MENSAJE: mensaje,
-                AREA: area
+                AREA: area,
+                NOTA: nota
             };
 
             try {
                 const response = await axios.post(url, null, { params: headers });
                 logToConsole(`Mensaje enviado a ${nombre} (${celular})`);
-                logToConsole(`Mensaje: ${mensaje}, enviado a ${nombre} (${celular})`);
+                logToConsole(`Mensaje: ${mensaje}, Nota: ${nota}, enviado a ${nombre} (${celular})`);
             } catch (error) {
                 logToConsole(`Error enviando mensaje a ${nombre} (${celular}): ${error}`);
             }
